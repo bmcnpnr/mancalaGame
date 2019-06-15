@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.bol.task</groupId>
-	<artifactId>mancala.server</artifactId>
+	<artifactId>mancala-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Mancala Server</name>
 	<description>Websocket messaging server for Mancala Game</description>
