@@ -1,8 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import connect from './WebSocketManager';
 
 function MancalaGame() {
+  console.log("game");
+  connect();
   return (
     <div className="MancalaGame">
       <header className="MancalaGame-header">

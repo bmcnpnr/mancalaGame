@@ -14,7 +14,8 @@ public class MancalaGameController {
 
     @MessageMapping("/userMove")
     @SendTo("/topic/mancala-notifications")
-    public String userMove(int indexOfBucket) {
+    public String userMove(String indexOfBucket) {
+        System.out.println(indexOfBucket);
         return "Hello";
     }
 }
