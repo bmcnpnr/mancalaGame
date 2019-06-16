@@ -3,3 +3,4 @@ https://github.com/sockjs/sockjs-client
 https://github.com/stomp-js/stompjs
 https://medium.com/@debanjanamaitra/stomp-js-in-5-minutes-30ebfb9d6e9a
 https://www.baeldung.com/websockets-spring
+https://www.devglan.com/spring-boot/spring-session-stomp-websocket

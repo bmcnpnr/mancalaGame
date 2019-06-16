@@ -18,6 +18,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/mancala-game-websocket").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/mancala-game-websocket").addInterceptors(new HttpHandShakeInterceptor())
+                .setAllowedOrigins("http://localhost:3000").withSockJS();
     }
+
+
 }
