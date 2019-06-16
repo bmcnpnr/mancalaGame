@@ -17,10 +17,8 @@ public class MancalaGameController {
 
     @MessageMapping("/connectToGame")
     @SendTo("/topic/mancala-notifications")
-    public String setUpTheGame(SimpMessageHeaderAccessor headerAccessor) {
+    public String connectToGame(SimpMessageHeaderAccessor headerAccessor) {
         //todo: check if session exist. If it does, do not init the game and just return the result to the client
-        System.out.println(headerAccessor.getSessionAttributes().get("sessionId").toString());
-        System.out.println("********************************");
         gameManager.connectTheUser(headerAccessor.getSessionAttributes().get("sessionId").toString());
         return new Gson().toJson(
                 gameManager.getGameState(headerAccessor.getSessionAttributes().get("sessionId").toString()).getGameBoard());
