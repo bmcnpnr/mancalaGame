@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GameManager implements ApplicationContextAware {
@@ -67,7 +64,7 @@ public class GameManager implements ApplicationContextAware {
     @EventListener
     private void onDisconnectEvent(SessionDisconnectEvent disconnectEvent) throws IOException {
         StompHeaderAccessor sha = StompHeaderAccessor.wrap(disconnectEvent.getMessage());
-        String userSessionId = (String) sha.getSessionAttributes().get("sessionId");
+        String userSessionId = (String) Objects.requireNonNull(sha.getSessionAttributes()).get("sessionId");
         if (this.gameStates.get(userSessionId) != null)
             removeGameFromServer(this.gameStates.get(userSessionId).getGameId());
     }
