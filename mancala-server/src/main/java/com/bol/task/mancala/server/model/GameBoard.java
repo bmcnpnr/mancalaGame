@@ -10,10 +10,6 @@ public class GameBoard {
     private int userOneScore = 0;
     private int userTwoScore = 0;
 
-    GameBoard() {
-
-    }
-
     void setToInitialState() {
         table = new int[2][6];
         for (int i = 0; i < 2; i++) {
@@ -29,7 +25,7 @@ public class GameBoard {
         if (row == 0) {
             if (col != 0)
                 return playMove(row, col - 1, numOfStones, player);
-            else if (Player.PLAYER_ONE.equals(player)) {
+            else if (Player.PLAYER_ONE.equals(player) && numOfStones > 0) {
                 userOneScore++;
                 return playMove(row + 1, col, numOfStones - 1, player);
             } else {
@@ -38,7 +34,7 @@ public class GameBoard {
         } else if (row == 1) {
             if (col != 5)
                 return playMove(row, col + 1, numOfStones, player);
-            else if (Player.PLAYER_TWO.equals(player)) {
+            else if (Player.PLAYER_TWO.equals(player) && numOfStones > 0) {
                 userTwoScore++;
                 return playMove(row - 1, col, numOfStones - 1, player);
             } else {
@@ -56,11 +52,23 @@ public class GameBoard {
         }
         if (row == 0 && col >= 0) {
             if (Player.PLAYER_ONE.equals(player) && col == 0) {
-                table[row][col] = table[row][col] + 1;
-                if (numOfStones > 1) {
+                if (numOfStones > 2) {
+                    table[row][col] = table[row][col] + 1;
                     userOneScore++;
                     return playMove(row + 1, col, numOfStones - 2, player);
-                } else return numOfStones == 1;
+                } else if (numOfStones == 2) {
+                    table[row][col] = table[row][col] + 1;
+                    if (userOneScore == 0) { //"player lands own bucket" case
+                        userOneScore = 1 + userTwoScore;
+                        userTwoScore = 0;
+                    } else {
+                        userOneScore++;
+                    }
+                    return playMove(row + 1, col, numOfStones - 2, player);
+                } else if (numOfStones == 1) {
+                    table[row][col] = table[row][col] + 1;
+                    return playMove(row + 1, col, numOfStones - 1, player);
+                }
             } else if (col == 0) {
                 table[row][col] = table[row][col] + 1;
                 return playMove(row + 1, col, numOfStones - 1, player);
@@ -71,10 +79,23 @@ public class GameBoard {
         } else if (row == 1 && col <= 5) {
             if (Player.PLAYER_TWO.equals(player) && col == 5) {
                 table[row][col] = table[row][col] + 1;
-                if (numOfStones > 1) {
+                if (numOfStones > 2) {
+                    table[row][col] = table[row][col] + 1;
                     userTwoScore++;
                     return playMove(row - 1, col, numOfStones - 2, player);
-                } else return numOfStones == 1;
+                } else if (numOfStones == 2) {
+                    table[row][col] = table[row][col] + 1;
+                    if (userTwoScore == 0) { //"player lands own bucket" case
+                        userTwoScore = 1 + userOneScore;
+                        userOneScore = 0;
+                    } else {
+                        userTwoScore++;
+                    }
+                    return playMove(row - 1, col, numOfStones - 2, player);
+                } else if (numOfStones == 1) {
+                    table[row][col] = table[row][col] + 1;
+                    return playMove(row - 1, col, numOfStones - 1, player);
+                }
             } else if (col == 5) {
                 table[row][col] = table[row][col] + 1;
                 return playMove(row - 1, col, numOfStones - 1, player);
