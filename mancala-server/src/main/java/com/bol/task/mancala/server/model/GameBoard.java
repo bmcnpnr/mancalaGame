@@ -78,7 +78,6 @@ public class GameBoard {
             }
         } else if (row == 1 && col <= 5) {
             if (Player.PLAYER_TWO.equals(player) && col == 5) {
-                table[row][col] = table[row][col] + 1;
                 if (numOfStones > 2) {
                     table[row][col] = table[row][col] + 1;
                     userTwoScore++;

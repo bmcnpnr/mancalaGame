@@ -25,24 +25,17 @@ public class GameState {
         gameId = UUID.randomUUID().toString();
     }
 
-    public void playUserMove(String userMove, String userSession) {
+    public boolean playUserMove(String userMove, String userSession) {
         System.out.println(userMove);
         JsonObject userMoveInJson = new JsonParser().parse(userMove).getAsJsonObject();
         int row = userMoveInJson.get("row").getAsInt();
         int col = userMoveInJson.get("col").getAsInt();
         if (players.get("player1").equals(userSession)) {
-            playerOneMove(row, col);
+            return getGameBoard().playMove(row, col, Player.PLAYER_ONE);
         } else if (players.get("player2").equals(userSession)) {
-            playerTwoMove(row, col);
+            return getGameBoard().playMove(row, col, Player.PLAYER_TWO);
         }
-    }
-
-    private void playerOneMove(int row, int col) {
-        boolean result = getGameBoard().playMove(row, col, Player.PLAYER_ONE);
-    }
-
-    private void playerTwoMove(int row, int col) {
-        boolean result = getGameBoard().playMove(row - 1, (5 - col), Player.PLAYER_TWO);
+        return false;
     }
 
     public Map<String, String> getPlayers() {
