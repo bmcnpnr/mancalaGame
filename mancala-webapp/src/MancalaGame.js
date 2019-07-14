@@ -5,6 +5,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import {getStompClient, sendMessage} from './WebSocketManager';
+
+let stompClient;
 
 const styles = theme => ({
   row: {
@@ -38,42 +41,42 @@ function GameRows(props) {
     <div className={classes.row}>
       <Grid container spacing={3}>
         <Grid item xs>
-        <Button onClick={props.handlePlayerMove}>6</Button>
+        <Button onClick={() => props.handlePlayerMove(0,0)}>{props.gameTable[0][0]}</Button>
         </Grid>
         <Grid item xs>
-        <Button onClick={props.handlePlayerMove}>6</Button>
+        <Button onClick={() => props.handlePlayerMove(0,1)}>{props.gameTable[0][1]}</Button>
         </Grid>
         <Grid item xs>
-        <Button onClick={props.handlePlayerMove}>6</Button>
+        <Button onClick={() => props.handlePlayerMove(0,2)}>{props.gameTable[0][2]}</Button>
         </Grid>
         <Grid item xs>
-        <Button onClick={props.handlePlayerMove}>6</Button>
+        <Button onClick={() => props.handlePlayerMove(0,3)}>{props.gameTable[0][3]}</Button>
         </Grid>
         <Grid item xs>
-        <Button onClick={props.handlePlayerMove}>6</Button>
+        <Button onClick={() => props.handlePlayerMove(0,4)}>{props.gameTable[0][4]}</Button>
         </Grid>
         <Grid item xs>
-        <Button onClick={props.handlePlayerMove}>6</Button>
+        <Button onClick={() => props.handlePlayerMove(0,5)}>{props.gameTable[0][5]}</Button>
         </Grid>
       </Grid>
       <Grid container spacing={3}>
         <Grid item xs>
-          <Button onClick={props.handlePlayerMove}>6</Button>
+          <Button onClick={() => props.handlePlayerMove(1,0)}>{props.gameTable[1][0]}</Button>
         </Grid>
         <Grid item xs>
-        <Button onClick={props.handlePlayerMove}>6</Button>
+        <Button onClick={() => props.handlePlayerMove(1,1)}>{props.gameTable[1][1]}</Button>
         </Grid>
         <Grid item xs>
-        <Button onClick={props.handlePlayerMove}>6</Button>
+        <Button onClick={() => props.handlePlayerMove(1,2)}>{props.gameTable[1][2]}</Button>
         </Grid>
         <Grid item xs>
-        <Button onClick={props.handlePlayerMove}>6</Button>
+        <Button onClick={() => props.handlePlayerMove(1,3)}>{props.gameTable[1][3]}</Button>
         </Grid>
         <Grid item xs>
-        <Button onClick={props.handlePlayerMove}>6</Button>
+        <Button onClick={() => props.handlePlayerMove(1,4)}>{props.gameTable[1][4]}</Button>
         </Grid>
         <Grid item xs>
-        <Button onClick={props.handlePlayerMove}>6</Button>
+        <Button onClick={() => props.handlePlayerMove(1,5)}>{props.gameTable[1][5]}</Button>
         </Grid>
       </Grid>
     </div>
@@ -83,10 +86,32 @@ function GameRows(props) {
 class MancalaGame extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      gameTable: [[6,6,6,6,6,6],[6,6,6,6,6,6]],
+      playerOneScore: 0,
+      playerTwoScore: 0
+    };
     this.handlePlayerMove = this.handlePlayerMove.bind(this);
+    
   }
-  handlePlayerMove(e) {
-    console.log(e);
+  handlePlayerMove(row, col) {
+    sendMessage(JSON.stringify({'row': row, 'col': col}));
+  }
+
+  componentDidMount() {
+    stompClient = getStompClient();
+    stompClient.connect({}, function (frame) {
+      console.log('Connected: ' + frame);
+      stompClient.subscribe('/topic/mancala-notifications', function (message) {
+        const jsonObj = JSON.parse(message.body);
+        this.setState({
+          gameTable:jsonObj.table,
+          playerOneScore:jsonObj.userOneScore,
+          playerTwoScore:jsonObj.userTwoScore
+        });
+      }.bind(this));
+      stompClient.send("/mancalaGame/connectToGame");
+    }.bind(this)); 
   }
   render() {
     const { classes } = this.props;
@@ -94,13 +119,13 @@ class MancalaGame extends React.Component {
       <div className={classes.root}>
         <Grid container spacing={3} direction={'row'}>
           <Grid item xs>
-            <Paper className={classes.paper}>6</Paper>
+            <Paper className={classes.paper}>{this.state.playerOneScore}</Paper>
           </Grid>
           <Grid item xs>
-            <GameRows handlePlayerMove={this.handlePlayerMove} />
+            <GameRows handlePlayerMove={this.handlePlayerMove} gameTable={this.state.gameTable} />
           </Grid>
           <Grid item xs>
-            <Paper className={classes.paper}>6</Paper>
+            <Paper className={classes.paper}>{this.state.playerTwoScore}</Paper>
           </Grid>
         </Grid>
       </div>

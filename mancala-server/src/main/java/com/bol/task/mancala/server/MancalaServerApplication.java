@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MancalaServerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MancalaServerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MancalaServerApplication.class, args);
+    }
 
 }

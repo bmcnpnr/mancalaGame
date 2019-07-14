@@ -43,6 +43,7 @@ public class GameManager implements ApplicationContextAware {
         if (this.gameStates.get(userSessionId) == null) {
             if (gameStates.size() % 2 == 0) {
                 GameState gameState = (GameState) this.applicationContext.getBean("gameState");
+                gameState.getPlayers().put("player1", userSessionId);
                 gameStates.put(userSessionId, gameState);
             } else {
                 GameState gameState = (GameState) gameStates.entrySet().toArray(new Map.Entry[gameStates.size()])[gameStates.size() - 1].getValue();
@@ -70,6 +71,7 @@ public class GameManager implements ApplicationContextAware {
     }
 
     private void removeGameFromServer(String gameId) throws IOException {
+        System.out.println(gameId);
         List<String> userSessions = new ArrayList<>();
         for (Map.Entry<String, GameState> entry : this.gameStates.entrySet()) {
             if (entry.getValue().getGameId().equals(gameId)) {

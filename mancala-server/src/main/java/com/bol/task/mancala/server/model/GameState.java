@@ -1,5 +1,7 @@
 package com.bol.task.mancala.server.model;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,26 @@ public class GameState {
         gameBoard = new GameBoard();
         gameBoard.setToInitialState();
         gameId = UUID.randomUUID().toString();
+    }
+
+    public void playUserMove(String userMove, String userSession) {
+        System.out.println(userMove);
+        JsonObject userMoveInJson = new JsonParser().parse(userMove).getAsJsonObject();
+        int row = userMoveInJson.get("row").getAsInt();
+        int col = userMoveInJson.get("col").getAsInt();
+        if (players.get("player1").equals(userSession)) {
+            playerOneMove(row, col);
+        } else if (players.get("player2").equals(userSession)) {
+            playerTwoMove(row, col);
+        }
+    }
+
+    private void playerOneMove(int row, int col) {
+        boolean result = getGameBoard().playMove(row, col, Player.PLAYER_ONE);
+    }
+
+    private void playerTwoMove(int row, int col) {
+        boolean result = getGameBoard().playMove(row - 1, (5 - col), Player.PLAYER_TWO);
     }
 
     public Map<String, String> getPlayers() {
