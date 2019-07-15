@@ -66,7 +66,7 @@ public class GameBoard {
                     } else {
                         userOneScore++;
                     }
-                    return playMove(row + 1, col, numOfStones - 2, player);
+                    return true;
                 } else if (numOfStones == 1) {
                     if (table[row][col] == 0) { //capture opponent's little pit
                         table[row][col] = 1 + table[row + 1][col];
@@ -74,7 +74,7 @@ public class GameBoard {
                     } else {
                         table[row][col] = table[row][col] + 1;
                     }
-                    return playMove(row + 1, col, numOfStones - 1, player);
+                    return false;
                 }
             } else if (Player.PLAYER_TWO.equals(player) && col == 0) {
                 table[row][col] = table[row][col] + 1;
@@ -102,7 +102,7 @@ public class GameBoard {
                     } else {
                         userTwoScore++;
                     }
-                    return playMove(row - 1, col, numOfStones - 2, player);
+                    return true;
                 } else if (numOfStones == 1) {
                     if (table[row][col] == 0) { //capture opponent's little pit
                         table[row][col] = 1 + table[row - 1][col];
@@ -110,9 +110,9 @@ public class GameBoard {
                     } else {
                         table[row][col] = table[row][col] + 1;
                     }
-                    return playMove(row - 1, col, numOfStones - 1, player);
+                    return false;
                 }
-            } else if (col == 5) {
+            } else if (Player.PLAYER_ONE.equals(player) && col == 5) {
                 table[row][col] = table[row][col] + 1;
                 return playMove(row - 1, col, numOfStones - 1, player);
             } else {
