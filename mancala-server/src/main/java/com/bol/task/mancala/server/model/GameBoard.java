@@ -21,6 +21,7 @@ public class GameBoard {
 
     boolean playMove(int row, int col, Player player) {
         int numOfStones = table[row][col];
+        if (numOfStones == 0) return true;
         table[row][col] = 0;
         if (row == 0) {
             if (col != 0) {
@@ -106,8 +107,8 @@ public class GameBoard {
                     return true;
                 } else if (numOfStones == 1) {
                     if (table[row][col] == 0) {
-                        userOneScore += 1 + table[row-1][col];
-                        table[row-1][col] = 0;
+                        userOneScore += 1 + table[row - 1][col];
+                        table[row - 1][col] = 0;
                     } else {
                         table[row][col] = table[row][col] + 1;
                     }

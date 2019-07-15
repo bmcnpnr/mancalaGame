@@ -2,6 +2,7 @@ package com.bol.task.mancala.server.controller;
 
 import com.bol.task.mancala.server.model.GameBoard;
 import com.bol.task.mancala.server.model.GameState;
+import com.bol.task.mancala.server.model.Player;
 import com.bol.task.mancala.server.service.GameManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -41,26 +42,18 @@ public class MancalaGameController {
     @SendTo("/topic/mancala-notifications")
     public String userMove(@Payload String userMove, SimpMessageHeaderAccessor headerAccessor) {
         GameState gameState = gameManager.getGameState(headerAccessor.getSessionAttributes().get("sessionId").toString());
-        boolean willThePlayerPlayAgain = gameState.playUserMove(userMove, headerAccessor.getSessionAttributes().get("sessionId").toString());
+        gameState.playUserMove(userMove, headerAccessor.getSessionAttributes().get("sessionId").toString());
         GameBoard gameBoard = gameState.getGameBoard();
         if (gameState.isGameFinished()) {
-            JsonObject gameFinishedJson = new JsonObject();
+            JsonObject gameFinishedJson = new JsonParser().parse(new Gson().toJson(gameBoard)).getAsJsonObject();
             gameFinishedJson.addProperty("gameFinished", gameState.calculateTheWinner());
             return gameFinishedJson.toString();
         }
         JsonObject gameBoardJson = new JsonParser().parse(new Gson().toJson(gameBoard)).getAsJsonObject();
-        if (headerAccessor.getSessionAttributes().get("sessionId").toString().equals(gameState.getPlayers().get("player1"))) {
-            if (willThePlayerPlayAgain)
-                gameBoardJson.addProperty("nextPlayerToPlay", "player1");
-            else
-                gameBoardJson.addProperty("nextPlayerToPlay", "player2");
-
-        } else if (headerAccessor.getSessionAttributes().get("sessionId").toString().equals(gameState.getPlayers().get("player2"))) {
-            if (willThePlayerPlayAgain)
-                gameBoardJson.addProperty("nextPlayerToPlay", "player2");
-            else
-                gameBoardJson.addProperty("nextPlayerToPlay", "player1");
-        }
+        if (gameState.getNextUserToPlay().equals(Player.PLAYER_ONE))
+            gameBoardJson.addProperty("nextPlayerToPlay", "player1");
+        else
+            gameBoardJson.addProperty("nextPlayerToPlay", "player2");
         return gameBoardJson.toString();
     }
 }

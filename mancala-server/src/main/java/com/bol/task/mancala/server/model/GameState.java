@@ -18,6 +18,7 @@ public class GameState {
     private Map<String, String> players = new HashMap<>();
     private GameBoard gameBoard;
     private String gameId;
+    private Player nextUserToPlay = Player.PLAYER_ONE;
     private boolean gameFinished;
 
     public GameState() {
@@ -27,23 +28,29 @@ public class GameState {
         gameId = UUID.randomUUID().toString();
     }
 
-    public boolean playUserMove(String userMove, String userSession) {
+    public void playUserMove(String userMove, String userSession) {
         JsonObject userMoveInJson = new JsonParser().parse(userMove).getAsJsonObject();
         int row = userMoveInJson.get("row").getAsInt();
         int col = userMoveInJson.get("col").getAsInt();
         boolean result = false;
-        if (players.get("player1").equals(userSession))
+        if (players.get("player1").equals(userSession) && nextUserToPlay.equals(Player.PLAYER_ONE) && row == 1) {
             result = getGameBoard().playMove(row, col, Player.PLAYER_ONE);
-        else
+
+            if (result) nextUserToPlay = Player.PLAYER_ONE;
+            else nextUserToPlay = Player.PLAYER_TWO;
+        } else if (players.get("player2").equals(userSession) && nextUserToPlay.equals(Player.PLAYER_TWO) && row == 0) {
             result = getGameBoard().playMove(row, col, Player.PLAYER_TWO);
+
+            if (result) nextUserToPlay = Player.PLAYER_TWO;
+            else nextUserToPlay = Player.PLAYER_ONE;
+        }
         checkIfGameIsFinished();
-        return result;
     }
 
     private void checkIfGameIsFinished() {
-        for (int i = 0 ; i < 2 ; i++) {
+        for (int i = 0; i < 2; i++) {
             gameFinished = true;
-            for (int j = 0 ; j < 6 ; j++) {
+            for (int j = 0; j < 6; j++) {
                 gameFinished = gameFinished && (getGameBoard().getTable()[i][j] == 0);
             }
             if (gameFinished) break;
@@ -89,5 +96,13 @@ public class GameState {
 
     public boolean isGameFinished() {
         return gameFinished;
+    }
+
+    public Player getNextUserToPlay() {
+        return nextUserToPlay;
+    }
+
+    public void setNextUserToPlay(Player nextUserToPlay) {
+        this.nextUserToPlay = nextUserToPlay;
     }
 }
