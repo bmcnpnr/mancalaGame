@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import { getStompClient, sendMessage } from './WebSocketManager';
 
 let stompClient;
-let buttonsDisabled = true;
+let buttonsDisabled = false;
 
 const styles = theme => ({
   row: {
@@ -43,64 +43,64 @@ function GameRows(props) {
     <div className={classes.row}>
       <Grid container spacing={3}>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
             onClick={() => props.handlePlayerMove(0, 0)}>{props.gameTable[0][0]}
           </Button>
         </Grid>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
             onClick={() => props.handlePlayerMove(0, 1)}>{props.gameTable[0][1]}
           </Button>
         </Grid>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
             onClick={() => props.handlePlayerMove(0, 2)}>{props.gameTable[0][2]}
           </Button>
         </Grid>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
             onClick={() => props.handlePlayerMove(0, 3)}>{props.gameTable[0][3]}
           </Button>
         </Grid>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
             onClick={() => props.handlePlayerMove(0, 4)}>{props.gameTable[0][4]}
           </Button>
         </Grid>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player1" || props.playerOfThisClient === "player1")}
             onClick={() => props.handlePlayerMove(0, 5)}>{props.gameTable[0][5]}
           </Button>
         </Grid>
       </Grid>
       <Grid container spacing={3}>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
             onClick={() => props.handlePlayerMove(1, 0)}>{props.gameTable[1][0]}
           </Button>
         </Grid>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
             onClick={() => props.handlePlayerMove(1, 1)}>{props.gameTable[1][1]}
           </Button>
         </Grid>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
             onClick={() => props.handlePlayerMove(1, 2)}>{props.gameTable[1][2]}
           </Button>
         </Grid>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
             onClick={() => props.handlePlayerMove(1, 3)}>{props.gameTable[1][3]}
           </Button>
         </Grid>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
             onClick={() => props.handlePlayerMove(1, 4)}>{props.gameTable[1][4]}
           </Button>
         </Grid>
         <Grid item xs>
-          <Button disabled={buttonsDisabled && (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
+          <Button disabled={buttonsDisabled || (props.nextPlayerToPlay === "player2" || props.playerOfThisClient === "player2")}
             onClick={() => props.handlePlayerMove(1, 5)}>{props.gameTable[1][5]}
           </Button>
         </Grid>
