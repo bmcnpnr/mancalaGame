@@ -135,7 +135,10 @@ class MancalaGame extends React.Component {
         if (jsonObj.gameFinished !== undefined) {
           buttonsDisabled = true;
           this.setState({
-            winnerMessage: jsonObj.gameFinished
+            winnerMessage: jsonObj.gameFinished,
+            gameTable: jsonObj.table,
+            playerOneScore: jsonObj.userOneScore,
+            playerTwoScore: jsonObj.userTwoScore
           });
         } else {
           this.setState({
