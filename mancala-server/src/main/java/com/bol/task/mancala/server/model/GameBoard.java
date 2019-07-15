@@ -46,9 +46,11 @@ public class GameBoard {
 
     private boolean playMove(int row, int col, int numOfStones, Player player) {
         if (numOfStones == 0) {
-            if (Player.PLAYER_ONE.equals(player) && row == 1 && col == 0)
+            if (Player.PLAYER_ONE.equals(player) && row == 1 && col == 0) {
                 return true;
-            else return Player.PLAYER_TWO.equals(player) && row == 0 && col == 5;
+            } else {
+                return Player.PLAYER_TWO.equals(player) && row == 0 && col == 5;
+            }
         }
         if (row == 0 && col >= 0) {
             if (Player.PLAYER_ONE.equals(player) && col == 0) {
