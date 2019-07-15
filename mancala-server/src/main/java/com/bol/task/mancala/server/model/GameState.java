@@ -18,10 +18,12 @@ public class GameState {
     private Map<String, String> players = new HashMap<>();
     private GameBoard gameBoard;
     private String gameId;
+    private boolean gameFinished;
 
     public GameState() {
         gameBoard = new GameBoard();
         gameBoard.setToInitialState();
+        gameFinished = true;
         gameId = UUID.randomUUID().toString();
     }
 
@@ -30,12 +32,32 @@ public class GameState {
         JsonObject userMoveInJson = new JsonParser().parse(userMove).getAsJsonObject();
         int row = userMoveInJson.get("row").getAsInt();
         int col = userMoveInJson.get("col").getAsInt();
+        boolean result = false;
         if (players.get("player1").equals(userSession)) {
-            return getGameBoard().playMove(row, col, Player.PLAYER_ONE);
+            result = getGameBoard().playMove(row, col, Player.PLAYER_ONE);
+            for (int i = 0 ; i < 6 ; i++) {
+                gameFinished = gameFinished && (getGameBoard().getTable()[1][i] == 0);
+            }
         } else if (players.get("player2").equals(userSession)) {
-            return getGameBoard().playMove(row, col, Player.PLAYER_TWO);
+            result = getGameBoard().playMove(row, col, Player.PLAYER_TWO);
+            for (int i = 0 ; i < 6 ; i++) {
+                gameFinished = gameFinished && (getGameBoard().getTable()[0][i] == 0);
+            }
         }
-        return false;
+        return result;
+    }
+
+    public String calculateWinner() {
+        if (gameFinished) {
+            if (getGameBoard().getUserOneScore() == getGameBoard().getUserTwoScore()) { //draw
+                return "draw";
+            } else if (getGameBoard().getUserOneScore() > getGameBoard().getUserTwoScore()) { //user one wins
+                return "player1 won";
+            } else { //user two wins
+                return "player 2 won";
+            }
+        }
+        return null;
     }
 
     public Map<String, String> getPlayers() {
@@ -60,5 +82,9 @@ public class GameState {
 
     public void setGameId(String gameId) {
         this.gameId = gameId;
+    }
+
+    public boolean isGameFinished() {
+        return gameFinished;
     }
 }

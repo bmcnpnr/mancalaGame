@@ -80,7 +80,7 @@ public class GameBoard {
                 table[row][col] = table[row][col] + 1;
                 return playMove(row + 1, col, numOfStones - 1, player);
             } else {
-                if (Player.PLAYER_TWO.equals(player) && table[row][col] == 0) {
+                if (Player.PLAYER_TWO.equals(player) && table[row][col] == 0 && numOfStones == 1) {
                     table[row][col] = table[row + 1][col] + 1;
                     table[row + 1][col] = 0;
                 } else {
@@ -116,7 +116,7 @@ public class GameBoard {
                 table[row][col] = table[row][col] + 1;
                 return playMove(row - 1, col, numOfStones - 1, player);
             } else {
-                if (Player.PLAYER_ONE.equals(player) && table[row][col] == 0) {
+                if (Player.PLAYER_ONE.equals(player) && table[row][col] == 0 && numOfStones == 1) {
                     table[row][col] = table[row - 1][col] + 1;
                     table[row - 1][col] = 0;
                 } else {
@@ -126,5 +126,17 @@ public class GameBoard {
             }
         }
         return false;
+    }
+
+    int[][] getTable() {
+        return table;
+    }
+
+    public int getUserOneScore() {
+        return userOneScore;
+    }
+
+    public int getUserTwoScore() {
+        return userTwoScore;
     }
 }
