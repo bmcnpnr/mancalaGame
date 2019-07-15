@@ -28,26 +28,29 @@ public class GameState {
     }
 
     public boolean playUserMove(String userMove, String userSession) {
-        System.out.println(userMove);
         JsonObject userMoveInJson = new JsonParser().parse(userMove).getAsJsonObject();
         int row = userMoveInJson.get("row").getAsInt();
         int col = userMoveInJson.get("col").getAsInt();
         boolean result = false;
-        if (players.get("player1").equals(userSession)) {
+        if (players.get("player1").equals(userSession))
             result = getGameBoard().playMove(row, col, Player.PLAYER_ONE);
-            for (int i = 0 ; i < 6 ; i++) {
-                gameFinished = gameFinished && (getGameBoard().getTable()[1][i] == 0);
-            }
-        } else if (players.get("player2").equals(userSession)) {
+        else
             result = getGameBoard().playMove(row, col, Player.PLAYER_TWO);
-            for (int i = 0 ; i < 6 ; i++) {
-                gameFinished = gameFinished && (getGameBoard().getTable()[0][i] == 0);
-            }
-        }
+        checkIfGameIsFinished();
         return result;
     }
 
-    public String calculateWinner() {
+    private void checkIfGameIsFinished() {
+        for (int i = 0 ; i < 2 ; i++) {
+            gameFinished = true;
+            for (int j = 0 ; j < 6 ; j++) {
+                gameFinished = gameFinished && (getGameBoard().getTable()[i][j] == 0);
+            }
+            if (gameFinished) break;
+        }
+    }
+
+    public String calculateTheWinner() {
         if (gameFinished) {
             if (getGameBoard().getUserOneScore() == getGameBoard().getUserTwoScore()) { //draw
                 return "draw";

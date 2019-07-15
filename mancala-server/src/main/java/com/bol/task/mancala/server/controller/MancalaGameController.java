@@ -45,19 +45,17 @@ public class MancalaGameController {
         GameBoard gameBoard = gameState.getGameBoard();
         if (gameState.isGameFinished()) {
             JsonObject gameFinishedJson = new JsonObject();
-            gameFinishedJson.addProperty("gameFinished", gameState.calculateWinner());
+            gameFinishedJson.addProperty("gameFinished", gameState.calculateTheWinner());
             return gameFinishedJson.toString();
         }
         JsonObject gameBoardJson = new JsonParser().parse(new Gson().toJson(gameBoard)).getAsJsonObject();
         if (headerAccessor.getSessionAttributes().get("sessionId").toString().equals(gameState.getPlayers().get("player1"))) {
-            gameBoardJson.addProperty("playerOfThisClient", "player1");
             if (willThePlayerPlayAgain)
                 gameBoardJson.addProperty("nextPlayerToPlay", "player1");
             else
                 gameBoardJson.addProperty("nextPlayerToPlay", "player2");
 
         } else if (headerAccessor.getSessionAttributes().get("sessionId").toString().equals(gameState.getPlayers().get("player2"))) {
-            gameBoardJson.addProperty("playerOfThisClient", "player2");
             if (willThePlayerPlayAgain)
                 gameBoardJson.addProperty("nextPlayerToPlay", "player2");
             else

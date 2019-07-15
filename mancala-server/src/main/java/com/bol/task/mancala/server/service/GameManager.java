@@ -9,7 +9,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -59,18 +58,16 @@ public class GameManager implements ApplicationContextAware {
      * Removes the game if a client disconnects from the server.
      *
      * @param disconnectEvent
-     * @throws IOException
      */
-    //todo implement the disconnection of the other client connected to the game instance
     @EventListener
-    private void onDisconnectEvent(SessionDisconnectEvent disconnectEvent) throws IOException {
+    private void onDisconnectEvent(SessionDisconnectEvent disconnectEvent) {
         StompHeaderAccessor sha = StompHeaderAccessor.wrap(disconnectEvent.getMessage());
         String userSessionId = (String) Objects.requireNonNull(sha.getSessionAttributes()).get("sessionId");
         if (this.gameStates.get(userSessionId) != null)
             removeGameFromServer(this.gameStates.get(userSessionId).getGameId());
     }
 
-    private void removeGameFromServer(String gameId) throws IOException {
+    private void removeGameFromServer(String gameId) {
         List<String> userSessions = new ArrayList<>();
         for (Map.Entry<String, GameState> entry : this.gameStates.entrySet()) {
             if (entry.getValue().getGameId().equals(gameId)) {
