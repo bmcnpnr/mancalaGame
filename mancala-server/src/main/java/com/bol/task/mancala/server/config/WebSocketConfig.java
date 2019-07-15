@@ -19,7 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/mancala-game-websocket").addInterceptors(new HttpHandShakeInterceptor())
-                .setAllowedOrigins("http://localhost:3000").withSockJS();
+                .setAllowedOrigins("http://localhost:3000", "http://localhost:5000").withSockJS();
     }
 
 
