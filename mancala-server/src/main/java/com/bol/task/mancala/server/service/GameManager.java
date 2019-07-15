@@ -71,7 +71,6 @@ public class GameManager implements ApplicationContextAware {
     }
 
     private void removeGameFromServer(String gameId) throws IOException {
-        System.out.println(gameId);
         List<String> userSessions = new ArrayList<>();
         for (Map.Entry<String, GameState> entry : this.gameStates.entrySet()) {
             if (entry.getValue().getGameId().equals(gameId)) {

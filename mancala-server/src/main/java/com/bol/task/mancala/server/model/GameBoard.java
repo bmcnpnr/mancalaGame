@@ -23,18 +23,18 @@ public class GameBoard {
         int numOfStones = table[row][col];
         table[row][col] = 0;
         if (row == 0) {
-            if (col != 0)
+            if (col != 0) {
                 return playMove(row, col - 1, numOfStones, player);
-            else if (Player.PLAYER_ONE.equals(player) && numOfStones > 0) {
+            } else if (Player.PLAYER_ONE.equals(player) && numOfStones > 0) {
                 userOneScore++;
                 return playMove(row + 1, col, numOfStones - 1, player);
             } else {
                 return playMove(row + 1, col, numOfStones, player);
             }
         } else if (row == 1) {
-            if (col != 5)
+            if (col != 5) {
                 return playMove(row, col + 1, numOfStones, player);
-            else if (Player.PLAYER_TWO.equals(player) && numOfStones > 0) {
+            } else if (Player.PLAYER_TWO.equals(player) && numOfStones > 0) {
                 userTwoScore++;
                 return playMove(row - 1, col, numOfStones - 1, player);
             } else {
@@ -58,7 +58,7 @@ public class GameBoard {
                     return playMove(row + 1, col, numOfStones - 2, player);
                 } else if (numOfStones == 2) {
                     table[row][col] = table[row][col] + 1;
-                    if (userOneScore == 0) { //"player lands own bucket" case
+                    if (userOneScore == 0) { //"player lands own big pit" case
                         userOneScore = 1 + userTwoScore;
                         userTwoScore = 0;
                     } else {
@@ -66,14 +66,24 @@ public class GameBoard {
                     }
                     return playMove(row + 1, col, numOfStones - 2, player);
                 } else if (numOfStones == 1) {
-                    table[row][col] = table[row][col] + 1;
+                    if (table[row][col] == 0) { //capture opponent's little pit
+                        table[row][col] = 1 + table[row + 1][col];
+                        table[row + 1][col] = 0;
+                    } else {
+                        table[row][col] = table[row][col] + 1;
+                    }
                     return playMove(row + 1, col, numOfStones - 1, player);
                 }
-            } else if (col == 0) {
+            } else if (Player.PLAYER_TWO.equals(player) && col == 0) {
                 table[row][col] = table[row][col] + 1;
                 return playMove(row + 1, col, numOfStones - 1, player);
-            }  else {
-                table[row][col] = table[row][col] + 1;
+            } else {
+                if (Player.PLAYER_TWO.equals(player) && table[row][col] == 0) {
+                    table[row][col] = table[row + 1][col] + 1;
+                    table[row + 1][col] = 0;
+                } else {
+                    table[row][col] = table[row][col] + 1;
+                }
                 return playMove(row, col - 1, numOfStones - 1, player);
             }
         } else if (row == 1 && col <= 5) {
@@ -84,7 +94,7 @@ public class GameBoard {
                     return playMove(row - 1, col, numOfStones - 2, player);
                 } else if (numOfStones == 2) {
                     table[row][col] = table[row][col] + 1;
-                    if (userTwoScore == 0) { //"player lands own bucket" case
+                    if (userTwoScore == 0) { //"player lands own big pit" case
                         userTwoScore = 1 + userOneScore;
                         userOneScore = 0;
                     } else {
@@ -92,14 +102,24 @@ public class GameBoard {
                     }
                     return playMove(row - 1, col, numOfStones - 2, player);
                 } else if (numOfStones == 1) {
-                    table[row][col] = table[row][col] + 1;
+                    if (table[row][col] == 0) { //capture opponent's little pit
+                        table[row][col] = 1 + table[row - 1][col];
+                        table[row - 1][col] = 0;
+                    } else {
+                        table[row][col] = table[row][col] + 1;
+                    }
                     return playMove(row - 1, col, numOfStones - 1, player);
                 }
             } else if (col == 5) {
                 table[row][col] = table[row][col] + 1;
                 return playMove(row - 1, col, numOfStones - 1, player);
             } else {
-                table[row][col] = table[row][col] + 1;
+                if (Player.PLAYER_ONE.equals(player) && table[row][col] == 0) {
+                    table[row][col] = table[row - 1][col] + 1;
+                    table[row - 1][col] = 0;
+                } else {
+                    table[row][col] = table[row][col] + 1;
+                }
                 return playMove(row, col + 1, numOfStones - 1, player);
             }
         }
