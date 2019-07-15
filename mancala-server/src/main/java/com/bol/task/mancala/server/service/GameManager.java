@@ -21,8 +21,7 @@ public class GameManager implements ApplicationContextAware {
      */
     private Map<String, GameState> gameStates = new LinkedHashMap<>();
 
-    public GameManager() {
-    }
+    GameManager() { }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -77,5 +76,11 @@ public class GameManager implements ApplicationContextAware {
         userSessions.forEach(userSession -> gameStates.remove(userSession));
     }
 
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
 
+    public Map<String, GameState> getGameStates() {
+        return gameStates;
+    }
 }

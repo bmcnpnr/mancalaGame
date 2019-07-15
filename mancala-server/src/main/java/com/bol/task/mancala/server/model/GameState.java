@@ -23,7 +23,7 @@ public class GameState {
     public GameState() {
         gameBoard = new GameBoard();
         gameBoard.setToInitialState();
-        gameFinished = true;
+        gameFinished = false;
         gameId = UUID.randomUUID().toString();
     }
 
